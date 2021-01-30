@@ -95,8 +95,7 @@ battery_draw(battery_t *bat, draw_context_t *dc, module_option_t *opts)
 typedef enum {
 	BAT_KEY_UNKNOWN,
 	BAT_KEY_STATUS,
-	BAT_KEY_SUPPLY_CHARGE_FULL,
-	BAT_KEY_SUPPLY_CHARGE_NOW,
+	BAT_KEY_CAPACITY,
 } battery_key_t;
 
 static battery_key_t
@@ -108,11 +107,8 @@ battery_parse_key(const char *str)
 	if (!strncmp("POWER_SUPPLY_STATUS", str, strlen(str)))
 		return BAT_KEY_STATUS;
 
-	if (!strncmp("POWER_SUPPLY_CHARGE_NOW", str, strlen(str)))
-		return BAT_KEY_SUPPLY_CHARGE_NOW;
-
-	if (!strncmp("POWER_SUPPLY_CHARGE_FULL", str, strlen(str)))
-		return BAT_KEY_SUPPLY_CHARGE_FULL;
+	if (!strncmp("POWER_SUPPLY_CAPACITY", str, strlen(str)))
+		return BAT_KEY_CAPACITY;
 
 	return BAT_KEY_UNKNOWN;
 }
@@ -139,7 +135,6 @@ battery_load_info(battery_t *bat, const char *path)
 	FILE *fp;
 	char key[32] = { 0 };
 	char val[32] = { 0 };
-	uint32_t full = 0, now = 0;
 
 	if (!(fp = fopen(path, "r")))
 		return false;
@@ -151,19 +146,14 @@ battery_load_info(battery_t *bat, const char *path)
 		case BAT_KEY_STATUS:
 			bat->status = battery_parse_status(val);
 			break;
-		case BAT_KEY_SUPPLY_CHARGE_FULL:
-			full = atoi(val);
-			break;
-		case BAT_KEY_SUPPLY_CHARGE_NOW:
-			now = atoi(val);
+		case BAT_KEY_CAPACITY:
+			bat->capacity = atoi(val);
 			break;
 		default:
 			break;
 		}
 	}
 	fclose(fp);
-
-	bat->capacity = now * 100 / full;
 
 	return true;
 }

@@ -38,7 +38,6 @@ DRAW_THERMAL:
 		opts->thermal.prefix = "";
 	if (!opts->thermal.suffix)
 		opts->thermal.suffix = "";
-	sprintf(buf, "%s%lu%s", opts->thermal.prefix, temp / 1000,
-	        opts->thermal.suffix);
+	sprintf(buf, "%s%lu%%", opts->thermal.prefix, temp / 1000);
 	draw_text(dc, buf);
 }

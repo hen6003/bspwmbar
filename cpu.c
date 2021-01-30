@@ -41,10 +41,10 @@ static int num_procs();
 static int cpu_perc(double **);
 
 static const char *deffgcols[4] = {
-	"#449f3d", /* success color */
-	"#2f8419", /* normal color */
-	"#f5a70a", /* warning color */
-	"#ed5456", /* critical color */
+	"#a3be8c", /* success color */
+	"#ebcb8b", /* normal color */
+	"#d08770", /* warning color */
+	"#bf616a", /* critical color */
 };
 static double *loadavgs = NULL;
 
@@ -154,7 +154,7 @@ cpugraph(draw_context_t *dc, module_option_t *opts)
 	double *vals = NULL;
 	int i, ncore = cpu_perc(&vals);
 
-	bgcol = color_load("#555555");
+	bgcol = color_load("#2e3440");
 	for (i = 0; i < 4; i++) {
 		if (opts->cpu.cols[i])
 			fgcols[i] = color_load(opts->cpu.cols[i]);
